@@ -1,4 +1,17 @@
 package ni.edu.uam.fact_app.models;
 
+import lombok.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Caterogia {
+    private Integer id;
+    private String nombre;
+    private boolean activa;
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }
