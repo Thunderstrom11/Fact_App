@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="99.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivos">
+                  <items>
+                    <MenuItem fx:id="mnuSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem fx:id="mnuProductos" mnemonicParsing="false" onAction="#abrirProductos" text="Productos" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+                  <Button fx:id="btnProductos" mnemonicParsing="false" onAction="#abrirProductos" text="Productos" />
+              </items>
+            </ToolBar>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <Label text="Sistema de Facturacion" textFill="#2abf22" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Unispace-Bold" size="14.0" />
+         </font></Label>
+   </center>
+</BorderPane>
