@@ -1,0 +1,23 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< ni.edu.uam:Fact_App >-------------------------
+[INFO] Building Fact_App 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> javafx-maven-plugin:0.0.8:run (default-cli) > process-classes @ Fact_App >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ Fact_App ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.13.0:compile (default-compile) @ Fact_App ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug target 21 module-path] to target\classes
+[WARNING] location of system modules is not set in conjunction with -source 21
+  not setting the location of system modules may lead to class files that cannot run on JDK 21
+    --release 21 is recommended instead of -source 21 -target 21 because it sets the location of system modules automatically
+[INFO] 
+[INFO] <<< javafx-maven-plugin:0.0.8:run (default-cli) < process-classes @ Fact_App <<<
+[INFO] 
+[INFO] 
+[INFO] --- javafx-maven-plugin:0.0.8:run (default-cli) @ Fact_App ---

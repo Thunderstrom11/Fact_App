@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -23,6 +24,13 @@ public class ProductoController {
     @FXML private CheckBox chkActivo;
     @FXML private ImageView imgProduto;
     @FXML private TableView<Producto> tblProductos;
+    @FXML private TableColumn<Producto, String> colCodigo;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, Categoria> colCategoria;
+    @FXML private TableColumn<Producto, Number> colPrecio;
+    @FXML private TableColumn<Producto, Number> colExistencia;
+    @FXML private TableColumn<Producto, Boolean> colActivo;
+
 
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
     private String rutaImagen;
@@ -36,13 +44,24 @@ public class ProductoController {
                 new Categoria(3, "Limpiezas", true)));
         tblProductos.setItems(productos);
         chkActivo.setSelected(true);
+
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
+        colExistencia.setCellValueFactory(new PropertyValueFactory<>("existencia"));
+        colActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        txtExistencia.setTextFormatter(new TextFormatter<>(change ->
+                change.getControlNewText().matches("\\d*") ? change : null));
+        txtPrecio.setTextFormatter(new TextFormatter<>(change ->
+                change.getControlNewText().matches("\\d*([.,]\\d*)?") ? change : null));
     }
 
     @FXML
     private void seleccionarImagen(){
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagenes", "*.png","*.jpg", "*.jpeg"));
-        File archivo = chooser.showOpenDialog(txtPrecio.getScene().getWindow().getScene().getWindow());
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png","*.jpg", "*.jpeg"));
+        File archivo = chooser.showOpenDialog(txtPrecio.getScene().getWindow());
         if (archivo != null){
             rutaImagen = archivo.getAbsolutePath();
             imgProduto.setImage(new Image(rutaImagen));
@@ -58,7 +77,7 @@ public class ProductoController {
             return;
         }
         try {
-            BigDecimal precio = new BigDecimal(txtPrecio.getText().trim());
+            BigDecimal precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
             int existencia = Integer.parseInt(txtExistencia.getText().trim());
             if (precio.signum() <= 0 || existencia < 0) {
                 mensaje(Alert.AlertType.WARNING,
@@ -73,6 +92,12 @@ public class ProductoController {
         } catch (NumberFormatException e) {
             mensaje(Alert.AlertType.ERROR, "Precio o existencia no válidos.");
         }
+    }
+
+    @FXML
+    private void reiniciarImagen() {
+        imgProduto.setImage(null);
+        rutaImagen = null;
     }
 
     @FXML

@@ -5,8 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import ni.edu.uam.fact_app.util.SceneManager;
-
-import java.io.IOError;
 import java.io.IOException;
 
 public class MenuPrincipalController {
@@ -14,7 +12,7 @@ public class MenuPrincipalController {
     private void abrirProductos(){
         try {
             SceneManager.abrirVentana(
-                    "/ni/edu/uam/facturacion/fxml/producto-view.fxml",
+                    "/ni/edu/uam/fact_app/fxml/producto-view.fxml",
                     "Gestion de Productos");
         }catch (IOException e){
             new Alert(Alert.AlertType.ERROR,"No fue posible abrir Productos").showAndWait();
