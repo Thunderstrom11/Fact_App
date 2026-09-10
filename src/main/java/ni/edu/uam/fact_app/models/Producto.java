@@ -11,8 +11,9 @@ import java.math.BigDecimal;
 
 public class Producto {
     private Integer id;
+    private String codigo;
     private String nombre;
-    private Caterogia caterogia;
+    private Categoria categoria;
     //Representa los decimales mejor que double
     private BigDecimal precioVenta;
     private int existencia;

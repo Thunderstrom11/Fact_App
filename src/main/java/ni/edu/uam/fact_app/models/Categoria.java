@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Caterogia {
+public class Categoria {
     private Integer id;
     private String nombre;
     private boolean activa;
