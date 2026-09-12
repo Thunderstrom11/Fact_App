@@ -1,5 +1,6 @@
 package ni.edu.uam.fact_app.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ public class ProductoController {
     @FXML private TableColumn<Producto, Number> colPrecio;
     @FXML private TableColumn<Producto, Number> colExistencia;
     @FXML private TableColumn<Producto, Boolean> colActivo;
+    @FXML private TableColumn<Producto, String> colImagen;
 
 
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
@@ -55,6 +57,24 @@ public class ProductoController {
                 change.getControlNewText().matches("\\d*") ? change : null));
         txtPrecio.setTextFormatter(new TextFormatter<>(change ->
                 change.getControlNewText().matches("\\d*([.,]\\d*)?") ? change : null));
+        colImagen.setCellValueFactory(data ->
+                new SimpleObjectProperty<>(data.getValue().getRutaImagen()));
+        colImagen.setCellFactory(col -> new TableCell<>() {
+            private final ImageView view = new ImageView();
+            {
+                view.setFitWidth(64); view.setFitHeight(40); view.setPreserveRatio(true);
+            }
+            @Override
+            protected void updateItem(String ruta, boolean empty) {
+                super.updateItem(ruta, empty);
+                if (empty || ruta == null) {
+                    setGraphic(null);
+                } else {
+                    view.setImage(new Image(new File(ruta).toURI().toString()));
+                    setGraphic(view);
+                }
+            }
+        });
     }
 
     @FXML
@@ -64,7 +84,7 @@ public class ProductoController {
         File archivo = chooser.showOpenDialog(txtPrecio.getScene().getWindow());
         if (archivo != null){
             rutaImagen = archivo.getAbsolutePath();
-            imgProduto.setImage(new Image(rutaImagen));
+            imgProduto.setImage(new Image(archivo.toURI().toString()));
         }
     }
 
@@ -95,7 +115,7 @@ public class ProductoController {
     }
 
     @FXML
-    private void reiniciarImagen() {
+    private void reiniciarImage() {
         imgProduto.setImage(null);
         rutaImagen = null;
     }

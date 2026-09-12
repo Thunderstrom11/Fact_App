@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -37,9 +38,19 @@
       </VBox>
    </top>
    <center>
-      <Label text="Sistema de Facturacion" textFill="#2abf22" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="Unispace-Bold" size="14.0" />
-         </font></Label>
+      <HBox alignment="CENTER" prefHeight="271.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Fact_App" textFill="#2abf22">
+               <font>
+                  <Font name="Unispace-Bold" size="14.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="75.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/factura.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
    </center>
 </BorderPane>
