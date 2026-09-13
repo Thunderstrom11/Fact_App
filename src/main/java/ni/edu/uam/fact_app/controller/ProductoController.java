@@ -94,7 +94,7 @@ public class ProductoController {
         if (txtCodigo.getText().isBlank() || txtNombre.getText().isBlank()
                 || txtPrecio.getText().isBlank() || txtExistencia.getText().isBlank()
                 || cmbCategoria.getValue() == null) {
-            AlertUtils.showAlert("Datos inválidos", "Complete los campos obligatorios.");
+            AlertUtils.showAlert("Datos inválidos", "Complete los campos Nombre, .");
             return;
         }
         try {

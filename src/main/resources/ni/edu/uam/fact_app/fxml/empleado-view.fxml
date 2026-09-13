@@ -26,15 +26,6 @@
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></TextField>
-                        <Button fx:id="btnProximoID" mnemonicParsing="false" onAction="#reiniciarImagen" style="-fx-background-color: white;">
-                            <graphic>
-                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../icons/CambiarID.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="142.0" prefWidth="307.0" spacing="10.0" GridPane.rowIndex="1">
@@ -68,11 +59,20 @@
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></DatePicker>
+                        <Button fx:id="btnProximoID" mnemonicParsing="false" onAction="#asignarFechaHoy" style="-fx-background-color: white;">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../icons/FechaHoy.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                      </children>
                   </VBox>
                </children>
             </GridPane>
-            <TableView fx:id="tblProductos" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="tblEmpleados" prefHeight="200.0" prefWidth="600.0">
                 <contextMenu>
                     <ContextMenu>
                         <items>
@@ -89,7 +89,7 @@
                                 <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
-                                            <Image url="@../icons/EliminarProducto.png" />
+                                            <Image url="@../icons/EliminarEmpleado.png" />
                                         </image>
                                     </ImageView>
                                 </graphic>
