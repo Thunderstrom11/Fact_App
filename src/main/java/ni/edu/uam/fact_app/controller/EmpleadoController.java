@@ -1,11 +1,14 @@
 package ni.edu.uam.fact_app.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import ni.edu.uam.fact_app.models.Cargo;
 import ni.edu.uam.fact_app.models.Empleado;
 import ni.edu.uam.fact_app.util.AlertUtils;
@@ -23,7 +26,7 @@ public class EmpleadoController {
     @FXML private TableColumn<Empleado, Number> colID;
     @FXML private TableColumn<Empleado, String> colNombres;
     @FXML private TableColumn<Empleado, String> colApellidos;
-    @FXML private TableColumn<Empleado, Cargo> colCargo;
+    @FXML private TableColumn<Empleado, String> colCargo;
     @FXML private TableColumn<Empleado, LocalDate> colFechaContr;
     @FXML private TableColumn<Empleado, Boolean> colActivo;
 
@@ -32,16 +35,26 @@ public class EmpleadoController {
 
     @FXML
     public void initialize() {
-        cmbCargoEmpleado.setItems(FXCollections.observableArrayList(
-                new Cargo(1, "Cajero", "Atencion de caja"),
-                new Cargo(2, "Vendedor", "Atencion al cliente en piso"),
-                new Cargo(3, "Administrador", "Gestion general del negocio")));
+        cmbCargoEmpleado.setItems(CargoController.getCargos());
+        // Refrescar la tabla de empleados cuando la lista de cargos cambia
+        CargoController.getCargos().addListener(
+                (ListChangeListener<Cargo>) change -> tblEmpleados.refresh());
+        cmbCargoEmpleado.setConverter(new StringConverter<Cargo>() {
+            @Override public String toString(Cargo cargo) {
+                return cargo == null ? "" : cargo.getNombres();
+            }
+            @Override public Cargo fromString(String string) {
+                return null;
+            }
+        });
         tblEmpleados.setItems(empleados);
         chkEmpleadoActivo.setSelected(true);
         colID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombres.setCellValueFactory(new PropertyValueFactory<>("nombres"));
         colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
-        colCargo.setCellValueFactory(new PropertyValueFactory<>("cargo"));
+        colCargo.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getCargo() == null
+                        ? "" : data.getValue().getCargo().getNombres()));
         colFechaContr.setCellValueFactory(new PropertyValueFactory<>("fechaContratacion"));
         colActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
         refrescarID();
@@ -116,7 +129,7 @@ public class EmpleadoController {
             return;
         }
         if (AlertUtils.showConfirmation("Confirmar eliminación",
-                "¿Desea eliminar al empleado '" + seleccionado.getNombres() + "'?")) {
+                "Esta seguro que desea eliminar al empleado '" + seleccionado.getNombres() + "'?")) {
             empleados.remove(seleccionado);
             limpiar();
         }
