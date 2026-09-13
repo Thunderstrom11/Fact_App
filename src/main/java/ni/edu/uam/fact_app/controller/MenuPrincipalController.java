@@ -21,6 +21,17 @@ public class MenuPrincipalController {
     }
 
     @FXML
+    private void abrirEmpleados(){
+        try {
+            SceneManager.abrirVentana(
+                    "/ni/edu/uam/fact_app/fxml/empleado-view.fxml",
+                    "Gestion de Empleados");
+        }catch (IOException e){
+            new Alert(Alert.AlertType.ERROR,"No fue posible abrir Empleado").showAndWait();
+        }
+    }
+
+    @FXML
     private void salir(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Desea cerrar la aplicacion ?", ButtonType.OK, ButtonType.CANCEL);
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) Platform.exit();
