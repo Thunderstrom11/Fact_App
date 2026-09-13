@@ -22,32 +22,58 @@
                <children>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <TextField fx:id="txtCodigo" promptText="Codigo (A-000)" />
-                        <TextField fx:id="txtNombre" promptText="Nombre" />
+                        <TextField fx:id="txtCodigo" promptText="Codigo (A-000)">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></TextField>
+                        <TextField fx:id="txtNombre" promptText="Nombre">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></TextField>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="142.0" prefWidth="307.0" spacing="10.0" GridPane.rowIndex="1">
                      <children>
-                        <TextField fx:id="txtExistencia" promptText="Existencia" />
-                        <TextField fx:id="txtPrecio" promptText="Precio" />
+                        <TextField fx:id="txtExistencia" promptText="Existencia">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></TextField>
+                        <TextField fx:id="txtPrecio" promptText="Precio">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></TextField>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="124.0" prefWidth="312.0" spacing="10.0" GridPane.columnIndex="1">
                      <children>
-                        <ComboBox fx:id="cmbCategoria" editable="true" prefWidth="150.0" promptText="Categoria" />
-                        <CheckBox fx:id="chkActivo" mnemonicParsing="false" prefHeight="18.0" prefWidth="60.0" text="Activo" />
+                        <ComboBox fx:id="cmbCategoria" prefWidth="150.0" promptText="Categoria" />
+                        <CheckBox fx:id="chkActivo" mnemonicParsing="false" prefHeight="18.0" prefWidth="73.0" text="Activo ?">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></CheckBox>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="126.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Preview:" />
+                        <Label text="Image preview:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <ImageView fx:id="imgProduto" fitHeight="72.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="btnReiniciarimagen" mnemonicParsing="false" onAction="#reiniciarImage" text="Reiniciar" />
+                        <Button fx:id="btnReiniciarimagen" mnemonicParsing="false" onAction="#reiniciarImage" style="-fx-background-color: white;">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../icons/Reiniciar.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                      </children>
                   </VBox>
                </children>
             </GridPane>
-            <TableView fx:id="tblProductos" prefHeight="192.0" prefWidth="502.0">
+            <TableView fx:id="tblProductos" prefHeight="200.0" prefWidth="600.0">
               <columns>
                 <TableColumn fx:id="colCodigo" prefWidth="75.0" text="Codigo" />
                 <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
@@ -61,7 +87,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
@@ -82,7 +108,7 @@
                      <font>
                         <Font name="Unispace-Bold" size="14.0" />
                      </font></Label>
-                  <ImageView fitHeight="82.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                           <Image url="@../icons/Producto.png" />
                       </image>
@@ -94,9 +120,33 @@
                </font></Label>
             <HBox prefHeight="37.0" prefWidth="600.0" spacing="15.0">
                <children>
-                  <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" text="Cerrar"/>
-                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" text="Guardar" />
-                  <Button fx:id="btnImagen" mnemonicParsing="false" onAction="#seleccionarImagen" text="Imagen" />
+                  <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" style="-fx-background-color: white;">
+                      <graphic>
+                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../icons/Salir.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                  </Button>
+                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
+                      <graphic>
+                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../icons/Guardar.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                  </Button>
+                  <Button fx:id="btnImagen" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
+                      <graphic>
+                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../icons/Image.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                  </Button>
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
