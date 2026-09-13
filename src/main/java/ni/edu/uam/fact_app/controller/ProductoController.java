@@ -41,10 +41,11 @@ public class ProductoController {
 
     @FXML
     public void initialize(){
-        cmbCategoria.setItems(FXCollections.observableArrayList(
-                new Categoria(1, "Alimentos", true),
-                new Categoria(2, "Bebidas", true),
-                new Categoria(3, "Limpiezas", true)));
+        // Catálogo de categorías compartido con la escena de Categorías
+        cmbCategoria.setItems(CategoriaController.getCategorias());
+        // Refresca el tableview de productos cuando cambia
+        CategoriaController.getCategorias().addListener(
+                (javafx.collections.ListChangeListener<Categoria>) change -> tblProductos.refresh());
         tblProductos.setItems(productos);
         chkActivo.setSelected(true);
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
