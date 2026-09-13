@@ -20,6 +20,8 @@
                   <items>
                     <MenuItem fx:id="mnuProductos" mnemonicParsing="false" onAction="#abrirProductos" text="Productos" />
                         <MenuItem fx:id="mnuEmpleados" mnemonicParsing="false" onAction="#abrirEmpleados" text="Empleados" />
+                        <MenuItem fx:id="mnuCargos" mnemonicParsing="false" onAction="#abrirCargos" text="Cargos" />
+                        <MenuItem fx:id="mnuCategorias" mnemonicParsing="false" onAction="#abrirCategorias" text="Categorias" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -48,6 +50,15 @@
                               </image>
                           </ImageView>
                       </graphic>
+                  </Button>
+                  <Button fx:id="btnCategorias" layoutX="130.0" layoutY="10.0" mnemonicParsing="false" onAction="#abrirCategorias" prefHeight="32.0" prefWidth="30.0">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/Categoria.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                   <Button fx:id="btnEmpleados" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" onAction="#abrirEmpleados" prefHeight="32.0" prefWidth="30.0">
                      <graphic>
