@@ -30,6 +30,11 @@
                   </VBox>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="142.0" prefWidth="307.0" spacing="10.0" GridPane.rowIndex="1">
                      <children>
+                        <Label text="Datos Personales:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
                         <TextField fx:id="txtNombresEmpleado" promptText="Nombres">
                            <font>
                               <Font name="System Bold" size="12.0" />

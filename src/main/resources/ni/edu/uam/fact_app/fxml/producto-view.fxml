@@ -162,15 +162,6 @@
                           </ImageView>
                       </graphic>
                   </Button>
-                  <Button fx:id="btnImagen" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
-                      <graphic>
-                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                  <Image url="@../icons/Image.png" />
-                              </image>
-                          </ImageView>
-                      </graphic>
-                  </Button>
                   <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="28.0" style="-fx-background-color: white;">
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -185,6 +176,15 @@
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
                                   <Image url="@../icons/EliminarProducto.png" />
+                              </image>
+                          </ImageView>
+                      </graphic>
+                  </Button>
+                  <Button fx:id="btnImagen" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
+                      <graphic>
+                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../icons/Image.png" />
                               </image>
                           </ImageView>
                       </graphic>
