@@ -30,7 +30,12 @@ public class EmpleadoController {
     @FXML private TableColumn<Empleado, LocalDate> colFechaContr;
     @FXML private TableColumn<Empleado, Boolean> colActivo;
 
-    private final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
+    private static final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
+
+    @FXML
+    public static ObservableList<Empleado> getEmpleados() {
+        return empleados;
+    }
     private int idEnEdicion = -1;
 
     @FXML

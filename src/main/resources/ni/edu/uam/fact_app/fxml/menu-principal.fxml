@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -7,7 +8,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_app.controller.MenuPrincipalController">
    <top>
-      <VBox prefHeight="99.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="93.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar>
               <menus>
@@ -99,19 +100,133 @@
       </VBox>
    </top>
    <center>
-      <HBox alignment="CENTER" prefHeight="271.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <GridPane BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="406.79999999999995" minWidth="10.0" prefWidth="194.8" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.0" minWidth="0.0" prefWidth="208.40000000000003" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.0" minWidth="10.0" prefWidth="199.99998474121094" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="117.4" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="266.2" minHeight="10.0" prefHeight="112.4" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="266.2" minHeight="10.0" prefHeight="98.59999999999997" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <Label text="Fact_App" textFill="#2abf22">
-               <font>
-                  <Font name="Unispace-Bold" size="14.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="75.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/factura.png" />
-               </image>
-            </ImageView>
+            <HBox alignment="CENTER" prefHeight="114.0" prefWidth="201.0" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Fact_App" textFill="#2abf22">
+                     <font>
+                        <Font name="Unispace-Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="75.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/factura.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="6.0" prefHeight="92.0" prefWidth="189.0" spacing="2.0" style="-fx-background-color: #5a8de0; -fx-border-color: grey;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblCantidadProductos" prefHeight="18.0" prefWidth="176.0" text="Productos en stock:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="11.0" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblCantidadCategorias" prefHeight="18.0" prefWidth="177.0" text="Cantidad de categorias:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="31.0" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblCantidadProductos" prefHeight="18.0" prefWidth="177.0" text="Cantidad de productos:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="11.0" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblDineroTotal" prefHeight="57.0" prefWidth="174.0" text="Dinero total:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane layoutX="10.0" layoutY="10.0" prefHeight="114.0" prefWidth="186.0" GridPane.rowIndex="1">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="5.0" layoutY="10.0" prefHeight="92.0" prefWidth="189.0" spacing="2.0" style="-fx-background-color: #e09d5a; -fx-border-color: grey;">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblCantidadEmpleados" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="210.0" text="Cantidad empleados:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" layoutX="11.0" layoutY="11.0" prefHeight="12.0" prefWidth="173.0">
+                           <children>
+                              <Label fx:id="lblCantidadCargos" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="193.0" text="Cantidad cargos:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_CENTER" layoutX="11.0" layoutY="31.0" prefHeight="52.0" prefWidth="174.0">
+                           <children>
+                              <Label fx:id="lblCargossinEmpleados" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="218.0" text="Cargos sin empleados:" textFill="#333348">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
          </children>
-      </HBox>
+      </GridPane>
    </center>
 </BorderPane>

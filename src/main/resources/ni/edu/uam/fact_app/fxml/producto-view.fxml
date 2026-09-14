@@ -38,7 +38,7 @@
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></TextField>
-                        <TextField fx:id="txtPrecio" promptText="Precio">
+                        <TextField fx:id="txtPrecio" promptText="Precio (C$)">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></TextField>
@@ -102,7 +102,7 @@
                 <TableColumn fx:id="colCodigo" prefWidth="75.0" text="Codigo" />
                 <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
                   <TableColumn fx:id="colCategoria" prefWidth="75.0" text="Categoria" />
-                  <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
+                  <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio (C$)" />
                   <TableColumn fx:id="colExistencia" prefWidth="75.0" text="Existencia" />
                   <TableColumn fx:id="colActivo" prefWidth="75.0" text="Activo ?" />
                   <TableColumn fx:id="colImagen" prefWidth="75.0" text="Imagen" />

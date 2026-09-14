@@ -35,13 +35,17 @@ public class ProductoController {
     @FXML private TableColumn<Producto, String> colImagen;
 
 
-    private final ObservableList<Producto> productos = FXCollections.observableArrayList(
+    private static final ObservableList<Producto> productos = FXCollections.observableArrayList(
             new Producto(null, "A-001", "Leche Entera Bolsa 900ml",
-                    CategoriaController.getCategorias().get(0),
-                    new BigDecimal("38.50"), 25, null, true),
+                    CategoriaController.getCategorias().getFirst(),
+                    new BigDecimal("42.75"), 25, null, true),
             new Producto(null, "B-001", "Pepsi Zero Lata 355ml",
                     CategoriaController.getCategorias().get(1),
-                    new BigDecimal("95.00"), 12, null, true));
+                    new BigDecimal("26.00"), 12, null, true));
+    @FXML
+    public static ObservableList<Producto> getProductos() {
+        return productos;
+    }
     private String rutaImagen;
 
 
