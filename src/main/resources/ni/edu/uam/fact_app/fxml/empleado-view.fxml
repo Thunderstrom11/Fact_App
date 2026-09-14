@@ -65,6 +65,9 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin></DatePicker>
                         <Button fx:id="btnProximoID" mnemonicParsing="false" onAction="#asignarFechaHoy" style="-fx-background-color: white;">
+                        <tooltip>
+                            <Tooltip text="Asignar la fecha actual" />
+                        </tooltip>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -148,6 +151,9 @@
             <HBox prefHeight="37.0" prefWidth="600.0" spacing="15.0">
                <children>
                   <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Cerrar ventana" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -157,6 +163,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Guardar empleado" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -166,6 +175,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="28.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Editar empleado seleccionado" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -175,6 +187,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" prefHeight="28.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Eliminar empleado seleccionado" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>

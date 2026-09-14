@@ -34,6 +34,9 @@
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                 <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#salir" prefHeight="32.0" prefWidth="32.0">
+                    <tooltip>
+                        <Tooltip text="Cerrar la aplicación" />
+                    </tooltip>
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -43,6 +46,9 @@
                     </graphic>
                 </Button>
                   <Button fx:id="btnProductos" mnemonicParsing="false" onAction="#abrirProductos" prefHeight="32.0" prefWidth="30.0">
+                      <tooltip>
+                          <Tooltip text="Administrar productos" />
+                      </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -52,7 +58,10 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnCategorias" layoutX="130.0" layoutY="10.0" mnemonicParsing="false" onAction="#abrirCategorias" prefHeight="32.0" prefWidth="30.0">
-                     <graphic>
+                      <tooltip>
+                          <Tooltip text="Administrar categorías" />
+                      </tooltip>
+                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/Categoria.png" />
@@ -61,7 +70,10 @@
                      </graphic>
                   </Button>
                   <Button fx:id="btnEmpleados" layoutX="50.0" layoutY="10.0" mnemonicParsing="false" onAction="#abrirEmpleados" prefHeight="32.0" prefWidth="30.0">
-                     <graphic>
+                      <tooltip>
+                          <Tooltip text="Administrar empleados" />
+                      </tooltip>
+                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/Empleado.png" />
@@ -70,7 +82,10 @@
                      </graphic>
                   </Button>
                   <Button fx:id="btnCargos" layoutX="90.0" layoutY="10.0" mnemonicParsing="false" onAction="#abrirCargos" prefHeight="32.0" prefWidth="30.0">
-                     <graphic>
+                      <tooltip>
+                          <Tooltip text="Administrar cargos" />
+                      </tooltip>
+                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/Cargo.png" />

@@ -27,6 +27,9 @@
                               <Font name="System Bold" size="12.0" />
                            </font></TextField>
                         <Button fx:id="btnProximoID" mnemonicParsing="false" onAction="#cambiarModoID" style="-fx-background-color: white;">
+                        <tooltip>
+                            <Tooltip text="Cambiar entre ID manual y autogenerado" />
+                        </tooltip>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -133,6 +136,9 @@
             <HBox prefHeight="37.0" prefWidth="600.0" spacing="15.0">
                <children>
                   <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrar" style="-fx-background-color: white;">
+                <tooltip>
+                    <Tooltip text="Cerrar ventana" />
+                </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -142,6 +148,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#guardar" prefHeight="28.0" prefWidth="36.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Guardar cargo" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -151,6 +160,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#editar" prefHeight="28.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Editar cargo seleccionado" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
@@ -160,6 +172,9 @@
                       </graphic>
                   </Button>
                   <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" prefHeight="28.0" style="-fx-background-color: white;">
+                    <tooltip>
+                        <Tooltip text="Eliminar cargo seleccionado" />
+                    </tooltip>
                       <graphic>
                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                               <image>
