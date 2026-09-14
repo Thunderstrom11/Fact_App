@@ -35,7 +35,13 @@ public class ProductoController {
     @FXML private TableColumn<Producto, String> colImagen;
 
 
-    private final ObservableList<Producto> productos = FXCollections.observableArrayList();
+    private final ObservableList<Producto> productos = FXCollections.observableArrayList(
+            new Producto(null, "A-001", "Leche Entera Bolsa 900ml",
+                    CategoriaController.getCategorias().get(0),
+                    new BigDecimal("38.50"), 25, null, true),
+            new Producto(null, "B-001", "Pepsi Zero Lata 355ml",
+                    CategoriaController.getCategorias().get(1),
+                    new BigDecimal("95.00"), 12, null, true));
     private String rutaImagen;
 
 
@@ -95,7 +101,7 @@ public class ProductoController {
         if (txtCodigo.getText().isBlank() || txtNombre.getText().isBlank()
                 || txtPrecio.getText().isBlank() || txtExistencia.getText().isBlank()
                 || cmbCategoria.getValue() == null) {
-            AlertUtils.showAlert("Datos inválidos", "Complete los campos Nombre, .");
+            AlertUtils.showAlert("Datos inválidos", "Complete Nombre, Código, Precio, Existencia y Categoría.");
             return;
         }
         try {

@@ -60,7 +60,7 @@ public class CategoriaController {
     private void guardar() {
         if (txtNombreCategoria.getText().isBlank()) {
             AlertUtils.showAlert("Datos inválidos",
-                    "Complete el nombre de la categoría.");
+                    "Complete el campo nombre de la categoría.");
             return;
         }
         int id = (idEnEdicion > 0) ? idEnEdicion : proximoID();
