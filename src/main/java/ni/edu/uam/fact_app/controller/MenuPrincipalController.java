@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import ni.edu.uam.fact_app.DAO.CategoriaDAO;
+import ni.edu.uam.fact_app.DAO.ProductoDAO;
 import ni.edu.uam.fact_app.models.Producto;
 import ni.edu.uam.fact_app.util.SceneManager;
 import java.io.IOException;
@@ -20,8 +22,14 @@ public class MenuPrincipalController {
     @FXML private Label lblCantidadCargos;
     @FXML private Label lblCargossinEmpleados;
 
+    private final CategoriaDAO categoriaDAO = new CategoriaDAO();
+    private final ProductoDAO productoDAO = new ProductoDAO();
+
     @FXML
     public void initialize() {
+        CategoriaController.getCategorias().setAll(categoriaDAO.listar());
+        ProductoController.getProductos().setAll(productoDAO.listar());
+
         ProductoController.getProductos().addListener(
                 (ListChangeListener<Object>) change -> actualizarTarjetas());
         EmpleadoController.getEmpleados().addListener(

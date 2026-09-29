@@ -1,7 +1,5 @@
 package ni.edu.uam.fact_app.DAO;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import ni.edu.uam.fact_app.application.DatabaseConnection;
 import ni.edu.uam.fact_app.models.Categoria;
 import ni.edu.uam.fact_app.models.Producto;
@@ -12,8 +10,6 @@ import java.util.List;
 
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductoDAO {
 
     private String mensajeError = "";

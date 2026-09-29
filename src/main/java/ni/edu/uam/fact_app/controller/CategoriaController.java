@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import ni.edu.uam.fact_app.DAO.CategoriaDAO;
 import ni.edu.uam.fact_app.models.Categoria;
 import ni.edu.uam.fact_app.util.AlertUtils;
 
@@ -18,10 +19,9 @@ public class CategoriaController {
     @FXML private TableColumn<Categoria, String> colCategoria;
     @FXML private TableColumn<Categoria, Boolean> colActiva;
 
-    private static final ObservableList<Categoria> categorias = FXCollections.observableArrayList(
-            new Categoria(1, "Eskimo - Lacteos", true),
-            new Categoria(2, "Pepsico - Sodas", true),
-            new Categoria(3, "Magia Blanca - P.Limpiezas", true));
+    private final CategoriaDAO dao = new CategoriaDAO();
+
+    private static final ObservableList<Categoria> categorias = FXCollections.observableArrayList();
 
     private int idEnEdicion = -1;
 
@@ -33,8 +33,13 @@ public class CategoriaController {
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colActiva.setCellValueFactory(new PropertyValueFactory<>("activa"));
         chxbCategoriaActiva.setSelected(true);
-        refrescarID();
         txtID.setDisable(true);
+        cargarBD();
+    }
+
+    private void cargarBD() {
+        categorias.setAll(dao.listar());
+        refrescarID();
     }
 
     @FXML
@@ -63,21 +68,37 @@ public class CategoriaController {
                     "Complete el campo nombre de la categoría.");
             return;
         }
-        int id = (idEnEdicion > 0) ? idEnEdicion : proximoID();
-        Categoria existente = findCategoria(id);
-        if (existente != null) {
-            existente.setNombre(txtNombreCategoria.getText().trim());
-            existente.setActiva(chxbCategoriaActiva.isSelected());
-            categorias.set(categorias.indexOf(existente), existente);
-            AlertUtils.showInfo("Categoría actualizada",
-                    "Se actualizaron los datos de: " + existente.getNombre());
-        } else {
-            categorias.add(new Categoria(id,
-                    txtNombreCategoria.getText().trim(),
-                    chxbCategoriaActiva.isSelected()));
-            AlertUtils.showInfo("Categoría guardada",
-                    "Categoría agregada correctamente: " + txtNombreCategoria.getText().trim());
+        boolean exito;
+
+        if (idEnEdicion > 0){
+            Categoria c = new Categoria();
+            c.setId(idEnEdicion);
+            c.setNombre(txtNombreCategoria.getText().trim());
+            c.setActiva(chxbCategoriaActiva.isSelected());
+
+            exito = dao.actualizar(c);
+            if (exito) {
+                AlertUtils.showInfo("Categoría actualizada",
+                        "Se actualizaron los datos de: " + c.getNombre());
+            }
+
+        }else {
+            Categoria c = new Categoria();
+            c.setNombre(txtNombreCategoria.getText().trim());
+            c.setActiva(chxbCategoriaActiva.isSelected());
+
+            exito = dao.guardar(c)!=null;
+            if (exito) {
+                AlertUtils.showInfo("Categoría guardada",
+                        "Categoría agregada correctamente: " + txtNombreCategoria.getText().trim());
+            }
+
         }
+        if (!exito) {
+            AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
+            return;
+        }
+        cargarBD();
         limpiar();
     }
 
@@ -101,21 +122,21 @@ public class CategoriaController {
                     "Seleccione la categoría de la tabla a eliminar.");
             return;
         }
-        if (AlertUtils.showConfirmation("Confirmar eliminación",
+        if (!AlertUtils.showConfirmation("Confirmar eliminación",
                 "¿Desea eliminar la categoría '" + seleccionado.getNombre() + "'?")) {
-            categorias.remove(seleccionado);
-            limpiar();
+            return;
         }
+        if (dao.eliminar(seleccionado.getId())){
+            AlertUtils.showInfo("Categoria eliminada",
+                    "La categoria se elimino correctamente.");
+        } else {
+            AlertUtils.showAlert("No se pudo eliminar", dao.getMensajeError());
+        }
+
+        cargarBD();
+        limpiar();
     }
 
-    private Categoria findCategoria(int id) {
-        for (Categoria c : categorias) {
-            if (c.getId() != null && c.getId() == id) {
-                return c;
-            }
-        }
-        return null;
-    }
 
     private void fillFields() {
         Categoria seleccionado = tblCategorias.getSelectionModel().getSelectedItem();

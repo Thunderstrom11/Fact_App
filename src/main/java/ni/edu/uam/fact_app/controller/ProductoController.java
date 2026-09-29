@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ni.edu.uam.fact_app.DAO.ProductoDAO;
 import ni.edu.uam.fact_app.models.Categoria;
 import ni.edu.uam.fact_app.models.Producto;
 import ni.edu.uam.fact_app.util.AlertUtils;
@@ -35,18 +36,16 @@ public class ProductoController {
     @FXML private TableColumn<Producto, String> colImagen;
 
 
-    private static final ObservableList<Producto> productos = FXCollections.observableArrayList(
-            new Producto(null, "A-001", "Leche Entera Bolsa 900ml",
-                    CategoriaController.getCategorias().getFirst(),
-                    new BigDecimal("42.75"), 25, null, true),
-            new Producto(null, "B-001", "Pepsi Zero Lata 355ml",
-                    CategoriaController.getCategorias().get(1),
-                    new BigDecimal("26.00"), 12, null, true));
+    private static final ObservableList<Producto> productos = FXCollections.observableArrayList();
+
     @FXML
     public static ObservableList<Producto> getProductos() {
         return productos;
     }
     private String rutaImagen;
+    private final ProductoDAO dao = new ProductoDAO();
+    private Integer idEnEdicion = null;
+
 
 
     @FXML
@@ -85,8 +84,15 @@ public class ProductoController {
                     setGraphic(view);
                 }
             }
+
         });
+     cargarBD();
     }
+
+    private void cargarBD() {
+        productos.setAll(dao.listar());
+    }
+
 
     @FXML
     private void seleccionarImagen(){
@@ -105,37 +111,63 @@ public class ProductoController {
         if (txtCodigo.getText().isBlank() || txtNombre.getText().isBlank()
                 || txtPrecio.getText().isBlank() || txtExistencia.getText().isBlank()
                 || cmbCategoria.getValue() == null) {
-            AlertUtils.showAlert("Datos inválidos", "Complete Nombre, Código, Precio, Existencia y Categoría.");
+            AlertUtils.showAlert("Datos inválidos",
+                    "Complete Nombre, Código, Precio, Existencia y Categoría.");
             return;
         }
+
+        BigDecimal precio;
+        int existencia;
         try {
-            BigDecimal precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
-            int existencia = Integer.parseInt(txtExistencia.getText().trim());
-            if (precio.signum() <= 0 || existencia < 0) {
-                AlertUtils.showAlert("Datos inválidos",
-                        "Precio mayor que cero y existencia no negativa.");
-                return;
-            }
-            Producto producto = new Producto(null, txtCodigo.getText().trim(),
-                    txtNombre.getText().trim(),  cmbCategoria.getValue(), precio,
-                    existencia, rutaImagen, chkActivo.isSelected());
-            Producto existente = findProducto(producto.getCodigo());
-            if (existente != null) {
-                productos.set(productos.indexOf(existente), producto);
-                AlertUtils.showInfo("Producto actualizado",
-                        "Se actualizaron los datos de: " + producto.getNombre());
-            } else {
-                productos.add(producto);
+            precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
+            existencia = Integer.parseInt(txtExistencia.getText().trim());
+        } catch (NumberFormatException e) {
+            AlertUtils.showAlert("Datos inválidos", "Precio o existencia no válidos.");
+            return;
+        }
+
+        if (precio.signum() <= 0 || existencia < 0) {
+            AlertUtils.showAlert("Datos inválidos",
+                    "Precio mayor que cero y existencia no negativa.");
+            return;
+        }
+
+        // Armamos el objeto con los datos del formulario
+        Producto producto = new Producto();
+        producto.setId(idEnEdicion);
+        producto.setCodigo(txtCodigo.getText().trim());
+        producto.setNombre(txtNombre.getText().trim());
+        producto.setCategoria(cmbCategoria.getValue());
+        producto.setPrecioVenta(precio);
+        producto.setExistencia(existencia);
+        producto.setRutaImagen(rutaImagen);
+        producto.setActivo(chkActivo.isSelected());
+
+        boolean exito;
+        if (idEnEdicion == null) {
+            exito = dao.guardar(producto) != null;
+            if (exito) {
                 AlertUtils.showInfo("Producto guardado",
                         "Producto agregado correctamente: " + producto.getNombre());
             }
-            limpiar();
-        } catch (NumberFormatException e) {
-            AlertUtils.showAlert("Datos inválidos", "Precio o existencia no válidos.");
+        } else {
+            exito = dao.actualizar(producto);
+            if (exito) {
+                AlertUtils.showInfo("Producto actualizado",
+                        "Se actualizaron los datos de: " + producto.getNombre());
+            }
         }
+
+        if (!exito) {
+            AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
+            return;
+        }
+        cargarBD();
+        limpiar();
     }
 
-    // editar carga el producto seleccionado y bloquea el codigo
+
+    // editar carga el producto seleccionado
     @FXML
     private void editar() {
         Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
@@ -145,7 +177,7 @@ public class ProductoController {
             return;
         }
         fillFields();
-        txtCodigo.setDisable(true);
+        idEnEdicion = seleccionado.getId();
     }
 
     @FXML
@@ -156,22 +188,20 @@ public class ProductoController {
                     "Seleccione el producto de la tabla a eliminar.");
             return;
         }
-        if (AlertUtils.showConfirmation("Confirmar eliminación",
+        if (!AlertUtils.showConfirmation("Confirmar eliminación",
                 "¿Desea eliminar el producto '" + seleccionado.getNombre() + "'?")) {
-            productos.remove(seleccionado);
-            limpiar();
+            return;
         }
+        if(dao.eliminar(seleccionado.getId())) {
+            AlertUtils.showInfo("Producto eliminado",
+                    "El producto se eliminó correctamente.");
+        } else {
+            AlertUtils.showAlert("No se pudo eliminar", dao.getMensajeError());
+        }
+        cargarBD();
+        limpiar();
     }
 
-
-    private Producto findProducto(String codigo) {
-        for (Producto p : productos) {
-            if (p.getCodigo().equalsIgnoreCase(codigo)) {
-                return p;
-            }
-        }
-        return null;
-    }
 
     private void fillFields() {
         Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
@@ -203,10 +233,11 @@ public class ProductoController {
 
     private void limpiar() {
         txtCodigo.clear(); txtNombre.clear(); txtPrecio.clear(); txtExistencia.clear();
-        txtCodigo.setDisable(false);
         cmbCategoria.getSelectionModel().clearSelection();
         cmbCategoria.setPromptText("Categoria");
-        chkActivo.setSelected(true); imgProduto.setImage(null); rutaImagen = null;
+        chkActivo.setSelected(true);
+        imgProduto.setImage(null); rutaImagen = null;
+        idEnEdicion = null;
     }
 }
 

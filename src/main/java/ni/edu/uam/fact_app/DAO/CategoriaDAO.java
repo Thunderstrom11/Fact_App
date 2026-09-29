@@ -3,17 +3,16 @@ package ni.edu.uam.fact_app.DAO;
 import ni.edu.uam.fact_app.application.DatabaseConnection;
 import ni.edu.uam.fact_app.models.Categoria;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class CategoriaDAO {
 
     private String mensajeError = "";
