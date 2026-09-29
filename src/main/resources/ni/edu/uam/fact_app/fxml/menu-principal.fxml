@@ -132,7 +132,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="12.0" prefWidth="173.0">
                            <children>
-                              <Label fx:id="lblCantidadProductos" prefHeight="18.0" prefWidth="176.0" text="Productos en stock:" textFill="#333348">
+                              <Label fx:id="lblCantidadProductos1" prefHeight="18.0" prefWidth="176.0" text="Productos en stock:" textFill="#333348">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

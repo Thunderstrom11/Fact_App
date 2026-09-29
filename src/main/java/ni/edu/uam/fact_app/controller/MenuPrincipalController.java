@@ -44,7 +44,7 @@ public class MenuPrincipalController {
         lblCantidadCargos.setText("Cantidad cargos: " + CargoController.getCargos().size());
         lblCargossinEmpleados.setText("Cargos sin empleados: " + contarCargosSinEmpleados());
     }
-    
+
     private BigDecimal valorInventario() {
         BigDecimal total = BigDecimal.ZERO;
         for (Producto p : ProductoController.getProductos()) {
