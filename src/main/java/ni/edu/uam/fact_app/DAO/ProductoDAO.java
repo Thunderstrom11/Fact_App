@@ -193,21 +193,7 @@ public class ProductoDAO {
         }
     }
 
-    public boolean desactivar(int id) {
-        String sql = "UPDATE producto SET activo = FALSE WHERE id = ?";
 
-        try (Connection cn = DatabaseConnection.getConnection();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            mensajeError = traducirError(e);
-            System.err.println("ProductoDAO.desactivar -> " + mensajeError);
-            return false;
-        }
-    }
 
     private String traducirError(SQLException e) {
         return switch (e.getSQLState()) {

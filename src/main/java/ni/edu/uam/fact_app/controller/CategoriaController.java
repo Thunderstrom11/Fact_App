@@ -68,6 +68,12 @@ public class CategoriaController {
                     "Complete el campo nombre de la categoría.");
             return;
         }
+        boolean repetido = tblCategorias.getItems().stream().anyMatch(categoria -> categoria.getNombre().equals(txtNombreCategoria.getText()));
+        if (repetido) {
+            AlertUtils.showAlert("Categoria existente",
+                    "Ya existe una categoria con este nombre.");
+            return;
+        }
         boolean exito;
 
         if (idEnEdicion > 0){
