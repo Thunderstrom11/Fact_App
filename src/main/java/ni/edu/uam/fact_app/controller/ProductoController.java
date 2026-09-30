@@ -50,7 +50,6 @@ public class ProductoController {
 
     @FXML
     public void initialize(){
-        // Catálogo de categorías compartido con la escena de Categorías
         cmbCategoria.setItems(CategoriaController.getCategorias());
         // Refresca el tableview de productos cuando cambia
         CategoriaController.getCategorias().addListener(
