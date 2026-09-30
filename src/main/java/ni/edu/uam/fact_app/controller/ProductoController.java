@@ -3,6 +3,7 @@ package ni.edu.uam.fact_app.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,6 +18,8 @@ import ni.edu.uam.fact_app.util.AlertUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductoController {
     @FXML private TextField txtPrecio;
@@ -34,9 +37,17 @@ public class ProductoController {
     @FXML private TableColumn<Producto, Number> colExistencia;
     @FXML private TableColumn<Producto, Boolean> colActivo;
     @FXML private TableColumn<Producto, String> colImagen;
+    @FXML private TextField txtBuscador;
+    @FXML private ComboBox<Categoria> cmbFiltroCategoria;
+    @FXML private CheckBox chxFiltroExistencia;
+    @FXML private RadioButton rbtnFiltroTodos;
+    @FXML private RadioButton rbtnFiltroActivo;
+    @FXML private RadioButton rbtnFiltroInactivo;
 
 
     private static final ObservableList<Producto> productos = FXCollections.observableArrayList();
+    private FilteredList<Producto> productosFiltrados;
+    private final ObservableList<Categoria> categoriasFiltro = FXCollections.observableArrayList();
 
     @FXML
     public static ObservableList<Producto> getProductos() {
@@ -53,8 +64,17 @@ public class ProductoController {
         cmbCategoria.setItems(CategoriaController.getCategorias());
         // Refresca el tableview de productos cuando cambia
         CategoriaController.getCategorias().addListener(
-                (javafx.collections.ListChangeListener<Categoria>) change -> tblProductos.refresh());
+                (javafx.collections.ListChangeListener<Categoria>) change -> {tblProductos.refresh(); cargarFiltroCategorias();});
         tblProductos.setItems(productos);
+        productosFiltrados = new FilteredList<>(productos, p -> true);
+        tblProductos.setItems(productosFiltrados);
+        tblProductos.getSelectionModel().selectedItemProperty().addListener(
+                (o, anterior, seleccionado) -> {
+                    if (seleccionado != null) {
+                        fillFields();
+                        idEnEdicion = seleccionado.getId();
+                    }
+                });
         chkActivo.setSelected(true);
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -85,7 +105,17 @@ public class ProductoController {
             }
 
         });
-     cargarBD();
+        cmbFiltroCategoria.setItems(categoriasFiltro);
+        cargarFiltroCategorias();
+        txtBuscador.textProperty().addListener((o, a, n) -> Filtrar());
+        cmbFiltroCategoria.valueProperty().addListener((o, a, n) -> Filtrar());
+        chxFiltroExistencia.selectedProperty().addListener((o, a, n) -> Filtrar());
+        rbtnFiltroTodos.selectedProperty().addListener((o, a, n) -> Filtrar());
+        rbtnFiltroActivo.selectedProperty().addListener((o, a, n) -> Filtrar());
+        rbtnFiltroInactivo.selectedProperty().addListener((o, a, n) -> Filtrar());
+
+        cargarBD();
+        Filtrar();
     }
 
     private void cargarBD() {
@@ -201,6 +231,77 @@ public class ProductoController {
         limpiar();
     }
 
+    @FXML
+    private void limpiarBusqueda() {
+        txtBuscador.clear();
+        chxFiltroExistencia.setSelected(false);
+        rbtnFiltroTodos.setSelected(true);
+        if (!categoriasFiltro.isEmpty()) {
+            cmbFiltroCategoria.setValue(categoriasFiltro.getFirst());
+        }
+        Filtrar();
+    }
+
+
+    private void cargarFiltroCategorias() {
+        Categoria seleccionada = cmbFiltroCategoria.getValue();
+
+        Categoria todas = new Categoria();
+        todas.setNombre("Todas las categorias");
+
+        List<Categoria> items = new ArrayList<>();
+        items.add(todas);
+        items.addAll(CategoriaController.getCategorias());
+        categoriasFiltro.setAll(items);
+
+        if (seleccionada != null && seleccionada.getId() != null) {
+            for (Categoria c : categoriasFiltro) {
+                if (seleccionada.getId().equals(c.getId())) {
+                    cmbFiltroCategoria.setValue(c);
+                    return;
+                }
+            }
+        }
+        cmbFiltroCategoria.setValue(todas);
+    }
+
+    private void Filtrar() {
+        String producto = txtBuscador.getText() == null
+                ? "" : txtBuscador.getText().trim().toLowerCase();
+        Categoria categoriafiltrada = cmbFiltroCategoria.getValue();
+        boolean enExistencia = chxFiltroExistencia.isSelected();
+        boolean filtroActivos = rbtnFiltroActivo.isSelected();
+        boolean filtroInactivos = rbtnFiltroInactivo.isSelected();
+
+        productosFiltrados.setPredicate(p -> {
+            // Texto de busqueda
+            if (!producto.isEmpty()) {
+                boolean okCodigo = p.getCodigo() != null
+                        && p.getCodigo().toLowerCase().contains(producto);
+                boolean okNombre = p.getNombre() != null
+                        && p.getNombre().toLowerCase().contains(producto);
+                boolean okCategoria = p.getCategoria() != null
+                        && p.getCategoria().getNombre() != null
+                        && p.getCategoria().getNombre().toLowerCase().contains(producto);
+                if (!okCodigo && !okNombre && !okCategoria) return false;
+            }
+            // Estado del producto
+            if (filtroActivos && !p.isActivo()) return false;
+            if (filtroInactivos && p.isActivo()) return false;
+
+            // Categoria a la que pertenece
+            if (categoriafiltrada != null && categoriafiltrada.getId() != null) {
+                if (p.getCategoria() == null
+                        || !categoriafiltrada.getId().equals(p.getCategoria().getId())) return false;
+            }
+            // Estado de existencia
+            if (enExistencia && p.getExistencia() == 0) return false;
+
+            return true;
+        });
+    }
+
+
 
     private void fillFields() {
         Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
@@ -236,6 +337,7 @@ public class ProductoController {
         cmbCategoria.setPromptText("Categoria");
         chkActivo.setSelected(true);
         imgProduto.setImage(null); rutaImagen = null;
+        tblProductos.getSelectionModel().clearSelection();
         idEnEdicion = null;
     }
 }

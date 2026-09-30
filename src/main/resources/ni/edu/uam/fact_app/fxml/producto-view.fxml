@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="614.0" style="-fx-background-color: lightgray;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_app.controller.ProductoController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="675.0" style="-fx-background-color: lightgray;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.fact_app.controller.ProductoController">
    <center>
       <VBox prefHeight="454.0" prefWidth="540.0" BorderPane.alignment="CENTER">
          <children>
@@ -93,7 +93,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="cmbFiltroCategoria" prefHeight="26.0" prefWidth="140.0" promptText="Categoria" />
+                  <ComboBox fx:id="cmbFiltroCategoria" prefHeight="26.0" prefWidth="150.0" promptText="Categoria" />
                   <Label alignment="CENTER" layoutX="47.0" layoutY="10.0" prefHeight="30.0" prefWidth="56.0" style="-fx-background-color: white; -fx-background-radius: 5;" text="Estado:">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -104,18 +104,19 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </CheckBox>
-                  <RadioButton fx:id="rbtnFiltroActivo" mnemonicParsing="false" selected="true" text="Activo ">
+                  <RadioButton fx:id="rbtnFiltroTodos" layoutX="501.0" layoutY="16.0" mnemonicParsing="false" selected="true" text="todos">
                      <toggleGroup>
                         <ToggleGroup fx:id="FiltroActivo" />
                      </toggleGroup>
                   </RadioButton>
+                  <RadioButton fx:id="rbtnFiltroActivo" mnemonicParsing="false" text="Activo " toggleGroup="$FiltroActivo" />
                   <RadioButton fx:id="rbtnFiltroInactivo" mnemonicParsing="false" text="Inactivo" toggleGroup="$FiltroActivo" />
                </children>
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>
                <padding>
-                  <Insets left="37.0" />
+                  <Insets left="67.0" />
                </padding>
             </HBox>
             <TableView fx:id="tblProductos" prefHeight="200.0" prefWidth="600.0">
