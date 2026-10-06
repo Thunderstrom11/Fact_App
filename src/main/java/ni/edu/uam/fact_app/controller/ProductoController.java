@@ -134,14 +134,14 @@ public class ProductoController {
         }
     }
 
-    // Al guardar si el código ya existe actualiza la fila, si no agrega una nueva
+    // Al guardar si el código ya existe actualiza la fila actual de la db, si no agrega una nueva
     @FXML
     private void guardar() {
         if (txtCodigo.getText().isBlank() || txtNombre.getText().isBlank()
                 || txtPrecio.getText().isBlank() || txtExistencia.getText().isBlank()
                 || cmbCategoria.getValue() == null) {
             AlertUtils.showAlert("Datos inválidos",
-                    "Complete Nombre, Código, Precio, Existencia y Categoría.");
+                    "Complete los todos los campos: Nombre, Código, Precio, Existencia y Categoría.");
             return;
         }
 
@@ -149,15 +149,26 @@ public class ProductoController {
         int existencia;
         try {
             precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
+        } catch (NumberFormatException e) {
+            AlertUtils.showAlert("Datos inválidos", "(Precio Invalido) El precio debe ser un valor numérico.");
+            return;
+        }
+        try {
             existencia = Integer.parseInt(txtExistencia.getText().trim());
         } catch (NumberFormatException e) {
-            AlertUtils.showAlert("Datos inválidos", "Precio o existencia no válidos.");
+            AlertUtils.showAlert("Datos inválidos", "(Existencia Invalida) La existencia no puede ser negativa.");
             return;
         }
 
-        if (precio.signum() <= 0 || existencia < 0) {
+
+        if (precio.signum() <= 0 ) {
             AlertUtils.showAlert("Datos inválidos",
-                    "Precio mayor que cero y existencia no negativa.");
+                    "(Precio Invalido) El Precio menor que cero");
+            return;
+        }
+        if (existencia < 0) {
+            AlertUtils.showAlert("Datos inválidos",
+                    "(Existencia Invalida) La existencia no puede negativa.");
             return;
         }
 
