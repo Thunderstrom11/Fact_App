@@ -100,6 +100,31 @@ public class CategoriaDAO {
         return null;
     }
 
+    public boolean existeNombre(String nombre, Integer idExcluir) throws SQLException {
+        String sql = """
+            SELECT COUNT(*) FROM categoria
+            WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(?))
+              AND (? IS NULL OR id <> ?)
+            """;
+
+        try (Connection cn = DatabaseConnection.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, nombre);
+            ps.setObject(2, idExcluir);
+            ps.setObject(3, idExcluir);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("CategoriaDAO.existeNombre -> " + e.getMessage());
+            return false;
+        }
+    }
+
+
     public boolean actualizar(Categoria categoria) {
         String sql = "UPDATE categoria SET nombre = ?, activa = ? WHERE id = ?";
 
@@ -133,6 +158,25 @@ public class CategoriaDAO {
             return false;
         }
     }
+
+    public boolean tieneProductos(int categoriaId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM producto WHERE categoria_id = ?";
+
+        try (Connection cn = DatabaseConnection.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setInt(1, categoriaId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("CategoriaDAO.tieneProductos -> " + e.getMessage());
+            return false;
+        }
+    }
+
     private String traducirError(SQLException e) {
         return switch (e.getSQLState()) {
             case "23505" -> "(unique violation) Ya existe una categoria con este nombre.";

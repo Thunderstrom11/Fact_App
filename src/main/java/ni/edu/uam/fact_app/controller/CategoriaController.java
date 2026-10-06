@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import java.sql.SQLException;
 import ni.edu.uam.fact_app.DAO.CategoriaDAO;
 import ni.edu.uam.fact_app.models.Categoria;
 import ni.edu.uam.fact_app.util.AlertUtils;
@@ -63,49 +64,59 @@ public class CategoriaController {
 
     @FXML
     private void guardar() {
-        if (txtNombreCategoria.getText().isBlank()) {
-            AlertUtils.showAlert("Datos inválidos",
-                    "Complete el campo nombre de la categoría.");
-            return;
-        }
-        boolean repetido = tblCategorias.getItems().stream().anyMatch(categoria -> categoria.getNombre().equals(txtNombreCategoria.getText()));
-        if (repetido) {
-            AlertUtils.showAlert("Categoria existente",
-                    "Ya existe una categoria con este nombre.");
-            return;
-        }
-        boolean exito;
-
-        if (idEnEdicion > 0){
-            Categoria c = new Categoria();
-            c.setId(idEnEdicion);
-            c.setNombre(txtNombreCategoria.getText().trim());
-            c.setActiva(chxbCategoriaActiva.isSelected());
-
-            exito = dao.actualizar(c);
-            if (exito) {
-                AlertUtils.showInfo("Categoría actualizada",
-                        "Se actualizaron los datos de: " + c.getNombre());
+        try {
+            if (txtNombreCategoria.getText().isBlank()) {
+                AlertUtils.showAlert("Datos inválidos",
+                        "Complete el campo nombre de la categoría.");
+                return;
             }
 
-        }else {
-            Categoria c = new Categoria();
-            c.setNombre(txtNombreCategoria.getText().trim());
-            c.setActiva(chxbCategoriaActiva.isSelected());
-
-            exito = dao.guardar(c)!=null;
-            if (exito) {
-                AlertUtils.showInfo("Categoría guardada",
-                        "Categoría agregada correctamente: " + txtNombreCategoria.getText().trim());
+            if (dao.existeNombre(txtNombreCategoria.getText().trim(),
+                    idEnEdicion > 0 ? idEnEdicion : null)) {
+                AlertUtils.showAlert("Categoría duplicada",
+                        "Ya existe una categoría con ese nombre.");
+                return;
             }
 
+            boolean exito;
+
+            if (idEnEdicion > 0) {
+                Categoria c = new Categoria();
+                c.setId(idEnEdicion);
+                c.setNombre(txtNombreCategoria.getText().trim());
+                c.setActiva(chxbCategoriaActiva.isSelected());
+
+                exito = dao.actualizar(c);
+                if (exito) {
+                    AlertUtils.showInfo("Categoría actualizada",
+                            "Se actualizaron los datos de: " + c.getNombre());
+                }
+
+            } else {
+                Categoria c = new Categoria();
+                c.setNombre(txtNombreCategoria.getText().trim());
+                c.setActiva(chxbCategoriaActiva.isSelected());
+
+                exito = dao.guardar(c) != null;
+                if (exito) {
+                    AlertUtils.showInfo("Categoría guardada",
+                            "Categoría agregada correctamente: " + c.getNombre());
+                }
+            }
+
+            if (!exito) {
+                AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
+                return;
+            }
+
+            cargarBD();
+            limpiar();
+
+        } catch (SQLException e) {
+            AlertUtils.showAlert("Error de base de datos",
+                    "No fue posible completar la operación.");
+            System.err.println(e.getMessage());
         }
-        if (!exito) {
-            AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
-            return;
-        }
-        cargarBD();
-        limpiar();
     }
 
     @FXML
@@ -132,17 +143,26 @@ public class CategoriaController {
                 "¿Desea eliminar la categoría '" + seleccionado.getNombre() + "'?")) {
             return;
         }
-        if (dao.eliminar(seleccionado.getId())){
-            AlertUtils.showInfo("Categoria eliminada",
-                    "La categoria se elimino correctamente.");
-        } else {
-            AlertUtils.showAlert("No se pudo eliminar", dao.getMensajeError());
+        try {
+            if (dao.tieneProductos(seleccionado.getId())) {
+                AlertUtils.showAlert("Categoría en uso",
+                        "No puede eliminar la categoría porque tiene productos asociados.");
+                return;
+            }
+            if (dao.eliminar(seleccionado.getId())) {
+                AlertUtils.showInfo("Categoria eliminada",
+                        "La categoria se elimino correctamente.");
+            } else {
+                AlertUtils.showAlert("No se pudo eliminar", dao.getMensajeError());
+            }
+            cargarBD();
+            limpiar();
+        } catch (SQLException e) {
+            AlertUtils.showAlert("Error de base de datos",
+                    "No fue posible completar la operación.");
+            System.err.println(e.getMessage());
         }
-
-        cargarBD();
-        limpiar();
     }
-
 
     private void fillFields() {
         Categoria seleccionado = tblCategorias.getSelectionModel().getSelectedItem();

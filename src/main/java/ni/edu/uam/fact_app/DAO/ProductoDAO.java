@@ -143,6 +143,30 @@ public class ProductoDAO {
         return null;
     }
 
+    public boolean codigoExiste(String codigo, Integer idExcluir) throws SQLException {
+        String sql = """
+            SELECT COUNT(*) FROM producto
+            WHERE codigo = ?
+              AND (? IS NULL OR id <> ?)
+            """;
+        try (Connection cn = DatabaseConnection.getConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, codigo);
+            ps.setObject(2, idExcluir);
+            ps.setObject(3, idExcluir);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("ProductoDAO.existeCodigo -> " + e.getMessage());
+            return false;
+        }
+    }
+
+
     public boolean actualizar(Producto p) {
         String sql = """
             UPDATE producto

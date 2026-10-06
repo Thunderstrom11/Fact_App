@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.sql.SQLException;
 import ni.edu.uam.fact_app.DAO.ProductoDAO;
 import ni.edu.uam.fact_app.models.Categoria;
 import ni.edu.uam.fact_app.models.Producto;
@@ -137,73 +138,33 @@ public class ProductoController {
     // Al guardar si el código ya existe actualiza la fila actual de la db, si no agrega una nueva
     @FXML
     private void guardar() {
-        if (txtCodigo.getText().isBlank() || txtNombre.getText().isBlank()
-                || txtPrecio.getText().isBlank() || txtExistencia.getText().isBlank()
-                || cmbCategoria.getValue() == null) {
-            AlertUtils.showAlert("Datos inválidos",
-                    "Complete los todos los campos: Nombre, Código, Precio, Existencia y Categoría.");
-            return;
-        }
+        try{
+            Producto producto = obtenerProductoFormulario();
 
-        BigDecimal precio;
-        int existencia;
-        try {
-            precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
-        } catch (NumberFormatException e) {
-            AlertUtils.showAlert("Datos inválidos", "(Precio Invalido) El precio debe ser un valor numérico.");
-            return;
-        }
-        try {
-            existencia = Integer.parseInt(txtExistencia.getText().trim());
-        } catch (NumberFormatException e) {
-            AlertUtils.showAlert("Datos inválidos", "(Existencia Invalida) La existencia no puede ser negativa.");
-            return;
-        }
-
-
-        if (precio.signum() <= 0 ) {
-            AlertUtils.showAlert("Datos inválidos",
-                    "(Precio Invalido) El Precio menor que cero");
-            return;
-        }
-        if (existencia < 0) {
-            AlertUtils.showAlert("Datos inválidos",
-                    "(Existencia Invalida) La existencia no puede negativa.");
-            return;
-        }
-
-        // Armamos el objeto con los datos del formulario
-        Producto producto = new Producto();
-        producto.setId(idEnEdicion);
-        producto.setCodigo(txtCodigo.getText().trim());
-        producto.setNombre(txtNombre.getText().trim());
-        producto.setCategoria(cmbCategoria.getValue());
-        producto.setPrecioVenta(precio);
-        producto.setExistencia(existencia);
-        producto.setRutaImagen(rutaImagen);
-        producto.setActivo(chkActivo.isSelected());
-
-        boolean exito;
-        if (idEnEdicion == null) {
-            exito = dao.guardar(producto) != null;
-            if (exito) {
-                AlertUtils.showInfo("Producto guardado",
-                        "Producto agregado correctamente: " + producto.getNombre());
+            if (dao.codigoExiste(producto.getCodigo(), idEnEdicion)){
+                AlertUtils.showAlert("Codigo duplicado", "Ya existe un producto guardado con ese codigo.");
+                return;
             }
-        } else {
-            exito = dao.actualizar(producto);
-            if (exito) {
-                AlertUtils.showInfo("Producto actualizado",
-                        "Se actualizaron los datos de: " + producto.getNombre());
-            }
-        }
+            boolean exito = idEnEdicion == null
+                    ? dao.guardar(producto) != null
+                    : dao.actualizar(producto);
 
-        if (!exito) {
-            AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
-            return;
+            if (!exito) {
+                AlertUtils.showAlert("No se pudo guardar", dao.getMensajeError());
+                return;
+            }
+
+            AlertUtils.showInfo("Producto guardado", "Operación realizada correctamente.");
+            cargarBD();
+            limpiar();
+
+        } catch (IllegalArgumentException e) {
+            AlertUtils.showAlert("Datos inválidos", e.getMessage());
+        } catch (SQLException e) {
+            AlertUtils.showAlert("Error de base de datos",
+                    "No fue posible completar la operación.");
+            System.err.println(e.getMessage());
         }
-        cargarBD();
-        limpiar();
     }
 
 
@@ -350,6 +311,53 @@ public class ProductoController {
         imgProduto.setImage(null); rutaImagen = null;
         tblProductos.getSelectionModel().clearSelection();
         idEnEdicion = null;
+    }
+
+    private Producto obtenerProductoFormulario() throws IllegalArgumentException {
+        String codigo = txtCodigo.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        Categoria categoria = cmbCategoria.getValue();
+
+        if (codigo.isEmpty()) {
+            throw new IllegalArgumentException("El código del producto es obligatorio.");
+        }
+        if (nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto es obligatorio.");
+        }
+        if (categoria == null) {
+            throw new IllegalArgumentException("Debe seleccionar una categoría.");
+        }
+
+        BigDecimal precio;
+        try {
+            precio = new BigDecimal(txtPrecio.getText().trim().replace(',', '.'));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El precio debe ser un valor numérico.");
+        }
+        if (precio.signum() <= 0) {
+            throw new IllegalArgumentException("El precio de venta debe ser mayor que cero.");
+        }
+
+        int existencia;
+        try {
+            existencia = Integer.parseInt(txtExistencia.getText().trim());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("La existencia debe ser un número entero.");
+        }
+        if (existencia < 0) {
+            throw new IllegalArgumentException("La existencia no puede ser negativa.");
+        }
+
+        Producto p = new Producto();
+        p.setId(idEnEdicion);
+        p.setCodigo(codigo);
+        p.setNombre(nombre);
+        p.setCategoria(categoria);
+        p.setPrecioVenta(precio);
+        p.setExistencia(existencia);
+        p.setRutaImagen(rutaImagen);
+        p.setActivo(chkActivo.isSelected());
+        return p;
     }
 }
 
