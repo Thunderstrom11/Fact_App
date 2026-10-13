@@ -161,7 +161,7 @@ public class ProductoDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("ProductoDAO.existeCodigo -> " + e.getMessage());
+            System.err.println("ProductoDAO.codigoExiste -> " + e.getMessage());
             return false;
         }
     }
